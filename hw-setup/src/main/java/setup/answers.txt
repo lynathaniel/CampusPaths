@@ -4,16 +4,22 @@
 1. Why did Fibonacci fail the testThrowsIllegalArgumentException< test? What (if anything) did
 you have to do to fix it? If you did not have to change anything to fix this issue, explain why.
 
+Fibonacci threw an IllegalArgumentException for 0 for being negative when it is nonnegative.
 
 
 2. Why did Fibonacci fail the testBaseCase test? What (if anything) did you have to do to fix
 it? If you did not have to change anything to fix this issue, explain why.
 
+Fibonacci did not properly check for negative numbers and included 0 as negative. This caused it
+to fail the testBaseCase since 0 should not be throwing an exception as an argument.
 
 
 3.Why did Fibonacci fail the testInductiveCase test? What (if anything) did you have to do to
 fix it? If you did not have to change anything to fix this issue, explain why.
 
+The testInductiveCase tests failed since the if-statement checking for which element of the
+sequence to return included element 2 (when indexing starting at 0) as one of the first 2
+elements of the sequence which would both be 1.
 
 
 ## Part 8: Debugger Tutorial
@@ -21,14 +27,25 @@ fix it? If you did not have to change anything to fix this issue, explain why.
 1. What are the values of "x", "y", and "sum" printed by your statement? Why was x not equal 
 to the first integer entered here, and how could we fix this?
 
+The value of "x" is 4 when it shuold be 5 and the value of "y" is 4. The "sum" printed by my statement is 0.
+X was not equal to the first integer entered here as a result of the arithmetic performed on it. Once the
+value is taken from the console, it is divided by the integer 2, which would round down any odd numbers
+and then multiplied by 2 which would only produce even numbers. The computeSum method also returns the
+difference not the sum.
 
 
 2. What are all the names and values listed in the “Variables” panel? What does the “frames” 
 tab list as the current method and line number? (Write down the text that was highlighted when 
 the Debug perspective first opened.)
 
+The variable names are "x" and "y". The value of "x" is 3 and the value of "y" is 4.
+The "frame" tab lists computeSum as the current method and it is on line 43.
+The text that was highlighted when the Debug perspective first opened was:
+        return x - y;
 
 
 3. What are all the names and values listed in the “Variables” panel after each of the two step overs?
 
+The variable names are "x", "y", and "sum". The value of "x" is 3, the value of "y" is 4, and the value
+of "sum" is -1.
 
