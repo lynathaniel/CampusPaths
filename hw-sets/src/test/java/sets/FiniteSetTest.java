@@ -53,28 +53,58 @@ public class FiniteSetTest {
     assertEquals(S12.size(), 2);
   }
   
-  // TODO: Feel free to initialize (private static) FiniteSet objects here
-  //       if you plan to use them for the tests below.
+  private static FiniteSet T0 = FiniteSet.of(new float[0]);
+  private static FiniteSet T1 = FiniteSet.of(new float[] {1});
+  private static FiniteSet T12 = FiniteSet.of(new float[] {1, 2});
+  private static FiniteSet T345 = FiniteSet.of(new float[] {3, 4, 5});
+
 
   /** Tests forming the union of two finite sets. */
   @Test
   public void testUnion() {
-    // TODO: implement this
+    assertEquals(S0.union(S0), S0);
+    assertEquals(S1.union(S1), S1);
+    assertEquals(S0.union(S1), S1);
+    assertEquals(S0.union(S12), S12);
+    assertEquals(S1.union(S12), S12);
+    assertEquals(S12.union(S12), S12);
+
+    assertEquals(T12.union(T345), FiniteSet.of(new float[] {1, 2, 3, 4, 5}));
+
+    assertEquals(S0.union(T0), FiniteSet.of(new float[0])); // Two empty sets
+    assertEquals(S0.union(T1), FiniteSet.of(new float[] {1})); // one point
+    assertEquals(S12.union(T12), FiniteSet.of(new float[] {1, 2})); // Same set
+    assertEquals(S12.union(T345), FiniteSet.of(new float[] {1, 2, 3, 4, 5})); // Different size/pts
     
   }
 
   /** Tests forming the intersection of two finite sets. */
   @Test
   public void testIntersection() {
-    // TODO: implement this
-    
+
+    assertEquals(S0.intersection(S0), S0);
+    assertEquals(S0.intersection(S1), S0);
+    assertEquals(S1.intersection(S1), S1);
+    assertEquals(S1.intersection(S12), S1);
+    assertEquals(S1.intersection(S12), S1);
+    assertEquals(S12.intersection(S12), S12);
+
+    assertEquals(T12.intersection(T345), T0);
+
+    assertEquals(S0.intersection(T0), S0);
+    assertEquals(S0.intersection(T1), S0);
+    assertEquals(S12.intersection(T12), S12);
+    assertEquals(S1.intersection(T12), S1);
   }
 
   /** Tests forming the difference of two finite sets. */
   @Test
   public void testDifference() {
-    // TODO: implement this
-    
+    assertEquals(S0.difference(T0), S0);
+    assertEquals(S0.difference(T1), S0);
+    assertEquals(S12.difference(T12), S0);
+    assertEquals(S12.difference(T345), S12);
+    assertEquals(S1.difference(T12), S0);
   }
 
 }

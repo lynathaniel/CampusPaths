@@ -11,9 +11,17 @@ import java.util.List;
  */
 public class SimpleSet {
 
-  // TODO: fill in and document the representation
-  //       Make sure to include the representation invariant (RI)
-  //       and the abstraction function (AF).
+  // Points are stored in a FiniteSet, in sorted order, with an extra -infinity at
+  // the front and +infinity at the end to simplify union etc.
+  // The FiniteSet stores either the points on the real line or the points excluded
+  // from the line.
+  //
+  // RI: if complement (R \) -infinity = points.vals[0] < points.vals[1] < ... < points.vals[points.vals.length-1] = + infinity
+  // AF(this) = if complement (R \) {points.vals[1], points.vals[2], ..., points.vals[points.vals.length-2]}
+
+  private final FiniteSet points;
+
+  private final boolean complement;
 
   /**
    * Creates a simple set containing only the given points.
@@ -22,8 +30,7 @@ public class SimpleSet {
    * @spec.effects this = {vals[0], vals[1], ..., vals[vals.length-1]}
    */
   public SimpleSet(float[] vals) {
-    // TODO: implement this
-
+    this(false, FiniteSet.of(vals));
   }
 
   /**
@@ -34,8 +41,8 @@ public class SimpleSet {
    * @spec.effects this = R \ points if complement else points
    */
   private SimpleSet(boolean complement, FiniteSet points) {
-    // TODO: implement this
-
+    this.points = points;
+    this.complement = complement;
   }
 
   @Override
@@ -44,7 +51,8 @@ public class SimpleSet {
       return false;
 
     SimpleSet other = (SimpleSet) o;
-    return this == other;  // TODO: replace this with a correct check
+    return (this.points.equals(other.points) &&
+            this.complement == other.complement);
   }
 
   @Override
@@ -58,9 +66,10 @@ public class SimpleSet {
    *         infty  if this = R \ {p1, p2, ..., pN}
    */
   public float size() {
-    // TODO: implement this
-
-    return 0;
+    if (this.complement) {
+      return Float.POSITIVE_INFINITY;
+    }
+    return this.points.size();
   }
 
   /**
@@ -73,10 +82,33 @@ public class SimpleSet {
    *     where p1, p2, ... pN are replaced by the individual numbers.
    */
   public String toString() {
-    // TODO: implement this with a loop. document its invariant
-    //       a StringBuilder may be useful for creating the string
-
-    return "";
+    StringBuilder s = new StringBuilder();
+    // If the set is a complement then add "R" to the string.
+    if (this.complement) {
+      s.append("R");
+      // If the set excludes values add "\".
+      if (this.points.size() > 0) {
+        s.append(" \\ ");
+      } else {
+        // Return if there are no excluded values.
+        return s.toString();
+      }
+    }
+    // Braces for values; whether the set is empty.
+    if (this.points.size() >= 0) {
+      s.append("{");
+      if (this.points.size() > 0) {
+        List<Float> pointsList = this.points.getPoints();
+        // pointsList = P
+        // Inv: s = P[0] + , ... , + P[i - 1]
+        for (int i = 0; i < pointsList.size() - 1; i++) {
+          s.append(pointsList.get(i) + ", ");
+        }
+        s.append(pointsList.get(pointsList.size() - 1));
+      }
+      s.append("}");
+    }
+    return s.toString();
   }
 
   /**
@@ -84,10 +116,9 @@ public class SimpleSet {
    * @return R \ this
    */
   public SimpleSet complement() {
-    // TODO: implement this method
-    //       include sufficient comments to see why it is correct (hint: cases)
 
-    return new SimpleSet(new float[] {});
+    // Returns the complement of the current SimpleSet.
+    return new SimpleSet(!complement, this.points);
   }
 
   /**
@@ -97,10 +128,25 @@ public class SimpleSet {
    * @return this union other
    */
   public SimpleSet union(SimpleSet other) {
-    // TODO: implement this method
-    //       include sufficient comments to see why it is correct (hint: cases)
+    // Whichever points are shared between the two become the new excluding set.
+    if (this.complement && other.complement) {
+      return new SimpleSet(true, this.points.intersection(other.points));
+    }
+    // If only the second set is excluding a finite set, the difference between the second
+    // and first sets is equivalent to the union of the two.
+    // Difference between the excluding set and the FiniteSet would be the new excluding set.
+    if (other.complement) {
+      return new SimpleSet(true, other.points.difference(this.points));
+    }
 
-    return new SimpleSet(new float[] {});
+    // If the first set is all real numbers minus a finite set, it is the
+    // difference between the first and second set (reverse of previous case).
+    // Difference between the excluding set and the FiniteSet would be the new excluding set.
+    if (this.complement) {
+      return new SimpleSet(true, this.points.difference(other.points));
+    }
+    // If both SimpleSets are FiniteSets, return the FiniteSet union of the two.
+    return new SimpleSet(false, this.points.union(other.points));
   }
 
   /**
@@ -110,11 +156,30 @@ public class SimpleSet {
    * @return this intersect other
    */
   public SimpleSet intersection(SimpleSet other) {
-    // TODO: implement this method
-    //       include sufficient comments to see why it is correct
-    // NOTE: There is more than one correct way to implement this.
 
-    return new SimpleSet(new float[] {});
+    // Check if both sets are infinite.
+    // Since both sets include all real numbers except for those specified,
+    // all the values being excluded can be combined into a single excluding set
+    // using union.
+    if (this.complement && other.complement) {
+      return new SimpleSet(true, this.points.union(other.points));
+    }
+    // The difference between the sets provides the values that are
+    // present in both sets when compared in the correct order.
+    // Next two cases pertain to this.
+    // Since the sets that are complements are all real numbers minus specified values,
+    // the values that the complement sets does not exclude can be shared with a finite set.
+    // So, difference will find which values the finite set has and are not excluded by
+    // the complement set.
+    if (other.complement) {
+      return new SimpleSet(false, this.points.difference(other.points));
+    }
+    // Switch sets to compare properly.
+    if (this.complement) {
+      return new SimpleSet(false, other.points.difference(this.points));
+    }
+    // Both sets are finiteSets so can be found normally.
+    return new SimpleSet(false, this.points.intersection(other.points));
   }
 
   /**
@@ -124,11 +189,30 @@ public class SimpleSet {
    * @return this minus other
    */
   public SimpleSet difference(SimpleSet other) {
-    // TODO: implement this method
-    //       include sufficient comments to see why it is correct
-    // NOTE: There is more than one correct way to implement this.
 
-    return new SimpleSet(new float[] {});
+    // If both sets are complements, the difference between the two would just be
+    // the values they do not both exlude. Thus, the difference between the two
+    // can be found by just comparing their finite set fields.
+    if (this.complement && other.complement) {
+      return new SimpleSet(false, other.points.difference(this.points));
+    }
+    // If the other set is a complement set, then the difference between other and this
+    // would be whichever values that the complement would not be exluding. This means
+    // that the values that both sets share in their finite set field would produce the
+    // the set of the values that would be the difference between the two.
+    if (other.complement) {
+      return new SimpleSet(false, other.points.intersection(this.points));
+    }
+    // If this is a complement set, then the difference it has with other would be
+    // any values that the two have in their finite set fields. This is since values
+    // held in this field for complement sets are the values that they do not have while
+    // a normal finite set is defining the values that it is holding onto. Thus, the union
+    // of all these values would produce the difference between the two.
+    if (this.complement) {
+      return new SimpleSet(true, this.points.union(other.points));
+    }
+    // If both are finite sets then the difference can be found normally.
+    return new SimpleSet(false, this.points.difference(other.points));
   }
 
 }

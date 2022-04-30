@@ -203,7 +203,9 @@ public class Natural {
     while (j != this.digits.length - 1) {
       j = j + 1;
       i = i - 1;
-      r = r.plus(new Natural(base, this.digits[i]));
+
+      r = r.leftShift(this.digits.length);
+      r = r.plus(new Natural(base, i));
     }
 
     // Setting each digit of base b in the new natural number will still provide

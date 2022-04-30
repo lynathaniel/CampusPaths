@@ -12,15 +12,45 @@ public class SimpleSetTest {
   /** Tests calculating the size of a set. */
   @Test
   public void testSize() {
-    // TODO: implement this
-    
+    assertEquals(S.size(), 0.0, 0.0);
+    assertEquals(S1.size(), 1.0, 0.0);
+    assertEquals(S2.size(), 1.0, 0.0);
+    assertEquals(S3.size(), 1.0, 0.0);
+    assertEquals(S12.size(), 2.0, 0.0);
+    assertEquals(S13.size(), 2.0, 0.0);
+    assertEquals(S23.size(), 2.0, 0.0);
+    assertEquals(S123.size(), 3.0, 0.0);
+
+    assertEquals(R.size(),Float.POSITIVE_INFINITY , 0.0);
+    assertEquals(R1.size(),Float.POSITIVE_INFINITY , 0.0);
+    assertEquals(R2.size(),Float.POSITIVE_INFINITY , 0.0);
+    assertEquals(R3.size(),Float.POSITIVE_INFINITY , 0.0);
+    assertEquals(R12.size(),Float.POSITIVE_INFINITY , 0.0);
+    assertEquals(R13.size(),Float.POSITIVE_INFINITY , 0.0);
+    assertEquals(R23.size(),Float.POSITIVE_INFINITY , 0.0);
+    assertEquals(R123.size(),Float.POSITIVE_INFINITY , 0.0);
   }
 
   /** Tests converting a set to a string. */
   @Test
   public void testToString() {
-    // TODO: implement this
-    
+    assertEquals(S.toString(), "{}");
+    assertEquals(S1.toString(), "{1.0}");
+    assertEquals(S2.toString(), "{2.0}");
+    assertEquals(S3.toString(), "{3.0}");
+    assertEquals(S12.toString(), "{1.0, 2.0}");
+    assertEquals(S13.toString(), "{1.0, 3.0}");
+    assertEquals(S23.toString(), "{2.0, 3.0}");
+    assertEquals(S123.toString(), "{1.0, 2.0, 3.0}");
+
+    assertEquals(R.toString(), "R");
+    assertEquals(R1.toString(), "R \\ {1.0}");
+    assertEquals(R2.toString(), "R \\ {2.0}");
+    assertEquals(R3.toString(), "R \\ {3.0}");
+    assertEquals(R12.toString(), "R \\ {1.0, 2.0}");
+    assertEquals(R13.toString(), "R \\ {1.0, 3.0}");
+    assertEquals(R23.toString(), "R \\ {2.0, 3.0}");
+    assertEquals(R123.toString(), "R \\ {1.0, 2.0, 3.0}");
   }
 
   private static SimpleSet S = new SimpleSet(new float[0]);

@@ -234,7 +234,7 @@ public class FiniteSet {
       } else if (S[i] > T[j]) {
         // Inv and S[i] > T[j]
         ;  // as with intersect, T[j] is not in {S[1], .., S[i-1]}
-        // -infty = U[0] < U[1] < ... < U[k-1] < min(S[i], T[j+1]) and
+         // -infty = U[0] < U[1] < ... < U[k-1] < min(S[i], T[j+1]) and
         // max(S[i-1], T[j]) < min(S[i], T[j+1]) and
         // {U[1], ..., U[k-1]} = {S[1], ..., S[i-1]} \ {T[1], ..., T[j]}
         j = j + 1;
