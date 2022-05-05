@@ -24,7 +24,7 @@ public class Graph {
     /**
      * Adds a node to the graph.
      * @param node The given node to add to the graph.
-     * @spec.requires node != null & this does not contain node
+     * @spec.requires node != null and this does not contain node
      * @spec.effects this += node
      */
     public void addNode(String node) {}
@@ -34,8 +34,7 @@ public class Graph {
      * @param edge The given labeled edge that will connect the two nodes.
      * @param node1 The first given node to connect.
      * @param node2 The second given node to connect.
-     * @spec.requires edge != null, node1 != null & this contains node1,
-     *                  node2 != null, this contains node2 & this does not contain edge.
+     * @spec.requires edge != null, node1 != null and this contains node1, node2 != null, this contains node2 and this does not contain edge.
      * @spec.effects this += edge
      */
     public void addEdge(String edge, String node1, String node2) {}
