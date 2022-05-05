@@ -12,16 +12,16 @@ import static org.junit.Assert.*;
  */
 public class GraphTest {
 
-    private static Graph graph1 = new Graph();
-    private static Graph graph2 = new Graph();
+    private Graph graph1 = new Graph();
+    private Graph graph2 = new Graph();
 
-    private static String node1 = "node 1";
-    private static String node2 = "node 2";
-    private static String node3 = "node 3";
+    private String node1 = "node 1";
+    private String node2 = "node 2";
+    private String node3 = "node 3";
 
-    private static String edge1 = "edge 1";
-    private static String edge2 = "edge 2";
-    private static String edge3 = "edge 3";
+    private String edge1 = "edge 1";
+    private String edge2 = "edge 2";
+    private String edge3 = "edge 3";
 
     /**
      * Tests checking for valid nodes in a graph.
