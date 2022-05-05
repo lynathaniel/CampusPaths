@@ -9,7 +9,18 @@ included each one; if not, explain whether you considered additional classes and
 not to include them.
 
 
-TODO: Your answer here!
+I included the two add methods (addNode and addEdge) as they allow the graph to actually function
+as a graph. The methods add nodes and edges to the graph which is what makes it a graph.
+
+I included the three "getter" methods (getParents and getChildren and getNodes) to be able to access
+information that would be useful to the user. ie.) origins from a destination and vice versa.
+
+I included the two "is" methods (isEdge and isNode) to be able to check if any given edge or node
+label is contained within the current graph implementation.
+
+I considered adding public inner classes to represent the nodes and edges but then realized that making
+their implementation public would pose a threat to other classes/programs utilizing their functionality
+when it should be kept just for the Graph class.
 
 
 ## Part 3
@@ -19,4 +30,10 @@ What was your testing strategy for this assignment? How do your script tests and
 differ from each other (if they do), and why?
 
 
-TODO: Your answer here!
+My testing strategy was first to confirm functionality of the code.
+Then, I moved forward with specific "oddball" cases such as adding duplicate nodes
+into the graph or having an edge point to and from the same node.
+
+My script tests and JUnit tests do not differ too much in terms of purpose.
+I made as many script tests as I saw fit and was able to with the limited amount of functions,
+while with my JUnit tests, I tested for cases and method functionality that was not available with the script.

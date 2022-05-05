@@ -1,0 +1,8 @@
+# Tests to see if the constructor of the graph class functions.
+
+# Create graphs
+CreateGraph graph1
+CreateGraph graph2
+CreateGraph graph3
+CreateGraph graph4
+CreateGraph graph5

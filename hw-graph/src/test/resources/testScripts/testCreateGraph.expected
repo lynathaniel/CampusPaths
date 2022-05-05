@@ -1,0 +1,8 @@
+# Tests to see if the constructor of the graph class functions.
+
+# Create graphs
+created graph graph1
+created graph graph2
+created graph graph3
+created graph graph4
+created graph graph5

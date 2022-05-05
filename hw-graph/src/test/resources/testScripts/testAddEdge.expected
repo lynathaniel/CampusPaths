@@ -1,0 +1,25 @@
+# Tests for functionality of addEdge method.
+
+# Create a graph
+created graph graph1
+created graph graph2
+
+# Add nodes to graph
+added node n1 to graph1
+added node n2 to graph1
+added node n3 to graph1
+
+added node n4 to graph2
+added node n5 to graph2
+
+# Connect the nodes together with edges.
+added edge e1 from n1 to n2 in graph1
+added edge e2 from n1 to n3 in graph1
+
+added edge e3 from n4 to n5 in graph2
+added edge e4 from n5 to n4 in graph2
+
+# Print the outgoing edges from n1 and n4
+the children of n1 in graph1 are: n2(e1) n3(e2)
+the children of n4 in graph2 are: n5(e3)
+the children of n5 in graph2 are: n4(e4)

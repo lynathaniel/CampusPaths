@@ -1,0 +1,27 @@
+# Tests for functionality of addEdge method.
+
+# Create a graph
+CreateGraph graph1
+CreateGraph graph2
+CreateGraph graph3
+CreateGraph graph3
+
+# Add nodes to graph
+AddNode graph1 n1
+AddNode graph1 n2
+AddNode graph1 n3
+
+AddNode graph2 n4
+AddNode graph2 n5
+
+# Connect the nodes together with edges.
+AddEdge graph1 n1 n2 e1
+AddEdge graph1 n1 n3 e2
+
+AddEdge graph2 n4 n5 e3
+AddEdge graph2 n5 n4 e4
+
+# Print the outgoing edges from n1 and n4
+ListChildren graph1 n1
+ListChildren graph2 n4
+ListChildren graph2 n5
