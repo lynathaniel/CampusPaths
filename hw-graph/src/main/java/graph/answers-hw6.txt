@@ -47,11 +47,12 @@ make one list for the nodes and create a list inside each node to collect its ou
 1. Describe any new tests you added and why you added them, or why you feel that your original
 tests alone are sufficient.
 
-
+I added a test for a cyclical graph. I read my feedback and realized that this was a case that I had undermined originally.
 
 
 2. Did you make any changes to your specifications as you were implementing your Graph? (yes/no)
 If yes, describe your changes and why you made them.
 
+No big changes to my specifications. All I did was removed methods that I found no purpose for.
 
 
