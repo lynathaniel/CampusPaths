@@ -196,8 +196,10 @@ public class GraphTestDriver {
             for (String child : children) {
                 childNodes.append(" " + child);
             }
+            output.println("the children of " + parentName + " in " + graphName + " are: " + childNodes.toString().trim());
+        } else {
+            output.println("the children of " + parentName + " in " + graphName + " are:");
         }
-        output.println("the children of " + parentName + " in " + graphName + " are: " + childNodes.toString().trim());
     }
 
     /**
