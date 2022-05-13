@@ -16,7 +16,7 @@ added node n7 to B
 added node n8 to B
 added node n9 to B
 
-# Connect nodes together to create cyclic graph
+# Connect nodes together to create a cyclic graph
 added edge e1 from n1 to n2 in A
 added edge e2 from n2 to n3 in A
 added edge e3 from n3 to n4 in A

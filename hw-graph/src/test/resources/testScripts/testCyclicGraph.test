@@ -16,7 +16,7 @@ AddNode B n7
 AddNode B n8
 AddNode B n9
 
-# Connect nodes together to create cyclic graph
+# Connect nodes together to create a cyclic graph
 AddEdge A n1 n2 e1
 AddEdge A n2 n3 e2
 AddEdge A n3 n4 e3
