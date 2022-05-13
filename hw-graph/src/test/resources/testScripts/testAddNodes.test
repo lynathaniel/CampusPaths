@@ -12,6 +12,6 @@ AddNode graph2 n1
 AddNode graph2 n2
 
 # Print the added nodes
-ListNode graph1
-ListNode graph2
-ListNode graph3
+ListNodes graph1
+ListNodes graph2
+ListNodes graph3

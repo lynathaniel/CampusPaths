@@ -13,5 +13,5 @@ AddNode graph2 n2
 AddNode graph2 n2
 
 # Print the nodes in the graphs
-ListNode graph1
-ListNode graph2
+ListNodes graph1
+ListNodes graph2

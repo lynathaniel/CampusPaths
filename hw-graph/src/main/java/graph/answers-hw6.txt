@@ -17,6 +17,17 @@ A few examples of possible Graph representations:
 representations listed above (for example, in terms of runtime complexity, space
 complexity, or ease of implementation).
 
+A. An advantage of having a collection of nodes and a collection of edges would be space complexity since each node
+edge is only stored once (no repeats). A disadvantage of this representation would be the runtime complexity to
+find outgoing edges since the collection of edges would have to be searched through each time an edge is requested.
+
+B. An advantage of having an adjacency list would be that each node's edges are immediately accessible (good runtime
+complexity). A disadvantage of this implementation would be space complexity since the representation would be creating
+a list for each individual node.
+
+C. An advantage of having an adjacency matrix would be the ability to find all edges between two nodes immediately
+(fast runtime complexity). However, a disadvantage of this type of implementation would be that it would be a large
+space complexity since having a matrix of nodes would require there to be two sets of the same nodes.
 
 
 
@@ -24,7 +35,8 @@ complexity, or ease of implementation).
 chose it. If you chose to use a different representation than one of the three we described
 above, be sure to list its advantages and disadvantages, too.
 
-
+I chose representation B (adjacency list) since it seems relatively simple to implement. I would just have to
+make one list for the nodes and create a list inside each node to collect its outgoing edges.
 
 
 ## Part 4

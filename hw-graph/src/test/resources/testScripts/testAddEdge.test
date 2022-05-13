@@ -3,8 +3,6 @@
 # Create a graph
 CreateGraph graph1
 CreateGraph graph2
-CreateGraph graph3
-CreateGraph graph3
 
 # Add nodes to graph
 AddNode graph1 n1

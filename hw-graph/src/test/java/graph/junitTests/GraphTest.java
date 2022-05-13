@@ -2,8 +2,10 @@ package graph.junitTests;
 
 import graph.*;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -26,14 +28,15 @@ public class GraphTest {
     /**
      * Tests checking for valid nodes in a graph.
      */
+    @Test
     public void testIsNode() {
-        assertTrue(graph1.isNode(node1));
+        assertFalse(graph1.isNode(node1));
         graph1.addNode(node1);
         assertTrue(graph1.isNode(node1));
-        assertTrue(graph1.isNode(node2));
+        assertFalse(graph1.isNode(node2));
         graph1.addNode(node2);
         assertTrue(graph1.isNode(node2));
-        assertTrue(graph1.isNode(node3));
+        assertFalse(graph1.isNode(node3));
         graph1.addNode(node3);
         assertTrue(graph1.isNode(node3));
     }
@@ -41,28 +44,33 @@ public class GraphTest {
     /**
      * Tests checking for valid edges between nodes in a graph.
      */
+    @Test
     public void testIsEdge() {
+        graph2.addNode(node1);
+        graph2.addNode(node2);
+        graph2.addNode(node3);
+        assertFalse(graph2.isEdge(edge1));
+        graph2.addEdge(node1, node2, edge1);
         assertTrue(graph2.isEdge(edge1));
-        graph2.addEdge(edge1, node1, node2);
-        assertTrue(graph2.isEdge(edge1));
+        assertFalse(graph2.isEdge(edge2));
+        graph2.addEdge(node1, node2, edge2);
         assertTrue(graph2.isEdge(edge2));
-        graph2.addEdge(edge2, node1, node2);
-        assertTrue(graph2.isEdge(edge2));
-        assertTrue(graph2.isEdge(edge3));
-        graph2.addEdge(edge3, node1, node2);
+        assertFalse(graph2.isEdge(edge3));
+        graph2.addEdge(node1, node2, edge3);
         assertTrue(graph2.isEdge(edge3));
     }
 
     /**
      * Tests that duplicates are handled properly.
      */
+    @Test
     public void testDuplicates() {
         graph1.addNode(node1);
         graph1.addNode(node1);
         graph1.addNode(node1);
         graph1.addNode(node1);
         graph1.addNode(node1);
-        HashSet<String> set = (HashSet<String>) graph1.getNodes();
+        Set<String> set = graph1.getNodes();
         assertTrue(set.size() == 1);
 
         graph2.addNode(node1);
@@ -70,7 +78,7 @@ public class GraphTest {
         graph2.addNode(node1);
         graph2.addNode(node1);
         graph2.addNode(node1);
-        HashSet<String> set2 = (HashSet<String>) graph2.getNodes();
+        Set<String> set2 = graph2.getNodes();
         assertTrue(set2.size() == 1);
     }
 }

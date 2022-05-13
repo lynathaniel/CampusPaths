@@ -1,0 +1,45 @@
+# Tests for the handling of cyclic graphs
+
+# Create a graph
+created graph A
+created graph B
+
+# Add nodes to graph
+added node n1 to A
+added node n2 to A
+added node n3 to A
+added node n4 to A
+added node n5 to A
+added node n6 to A
+
+added node n7 to B
+added node n8 to B
+added node n9 to B
+
+# Connect nodes together to create cyclic graph
+added edge e1 from n1 to n2 in A
+added edge e2 from n2 to n3 in A
+added edge e3 from n3 to n4 in A
+added edge e4 from n4 to n5 in A
+added edge e5 from n5 to n2 in A
+added edge e6 from n5 to n6 in A
+
+added edge e7 from n7 to n8 in B
+added edge e8 from n8 to n9 in B
+added edge e9 from n9 to n7 in B
+
+# List the nodes of the graph
+A contains: n1 n2 n3 n4 n5 n6
+B contains: n7 n8 n9
+
+# List the children of all the nodes
+the children of n1 in A are: n2(e1)
+the children of n2 in A are: n3(e2)
+the children of n3 in A are: n4(e3)
+the children of n4 in A are: n5(e4)
+the children of n5 in A are: n2(e5) n6(e6)
+the children of n6 in A are:
+
+the children of n7 in B are: n8(e7)
+the children of n8 in B are: n9(e8)
+the children of n9 in B are: n7(e9)

@@ -16,7 +16,7 @@ added edge e1 from n1 to n1 in graph1
 added edge e2 from n2 to n2 in graph1
 
 added edge e3 from n3 to n3 in graph2
-added edge e4 from n4 to n4 in graph2ww
+added edge e4 from n4 to n4 in graph2
 
 # Print out the children of the outgoing edges from n1, n2, n3 & n4
 the children of n1 in graph1 are: n1(e1)

@@ -1,0 +1,45 @@
+# Tests for the handling of cyclic graphs
+
+# Create a graph
+CreateGraph A
+CreateGraph B
+
+# Add nodes to graph
+AddNode A n1
+AddNode A n2
+AddNode A n3
+AddNode A n4
+AddNode A n5
+AddNode A n6
+
+AddNode B n7
+AddNode B n8
+AddNode B n9
+
+# Connect nodes together to create cyclic graph
+AddEdge A n1 n2 e1
+AddEdge A n2 n3 e2
+AddEdge A n3 n4 e3
+AddEdge A n4 n5 e4
+AddEdge A n5 n2 e5
+AddEdge A n5 n6 e6
+
+AddEdge B n7 n8 e7
+AddEdge B n8 n9 e8
+AddEdge B n9 n7 e9
+
+# List the nodes of the graph
+ListNodes A
+ListNodes B
+
+# List the children of all the nodes
+ListChildren A n1
+ListChildren A n2
+ListChildren A n3
+ListChildren A n4
+ListChildren A n5
+ListChildren A n6
+
+ListChildren B n7
+ListChildren B n8
+ListChildren B n9
