@@ -6,18 +6,18 @@ import java.util.*;
  * Represents a mutable collection of nodes and edges. Edges are the connections
  * between two nodes that specify directionality.
  */
-public class Graph {
+public class Graph<N, E> {
 
     // RI: nodes != null, nodes = nodes(nodeName1), nodes(nodeName2), ... , nodes(nodeNameN)
     // AF(this) = {nodes(nodeName1) + nodes(nodeName2) + ... + nodes(nodeNameN)}
 
-    private Map<String, Node> nodes;
+    private Map<N, Map<N, E>> adjacencyList;
 
     /**
      * Creates an empty graph object.
      */
     public Graph() {
-        nodes = new HashMap<>();
+        adjacencyList = new HashMap<>();
         //checkRep();
     }
 
@@ -29,26 +29,27 @@ public class Graph {
      * @spec.modifies this
      * @spec.effects this += node
      */
-    public void addNode(String nodeName) {
+    public void addNode(String nodeName, N data) {
         //checkRep();
-        nodes.put(nodeName, new Node(nodeName));
+        if (!adjacencyList.containsKey(data)) {
+            adjacencyList.put(data, new HashMap<>());
+        }
         //checkRep();
     }
 
     /**
      * Adds an edge between two nodes in the graph.
-     * @param edgeLabel The given labeled edge that will connect the two nodes.
-     * @param node1     The first given node to connect.
-     * @param node2     The second given node to connect.
+     *
+     * @param label The given labeled edge that will connect the two nodes.
+     * @param node1 The first given node to connect.
+     * @param node2 The second given node to connect.
      * @spec.requires edge != null, node1 != null and this contains node1, node2 != null, this contains node2 and this does not contain edge.
      * @spec.modifies this
      * @spec.effects this += edge
      */
-    public void addEdge(String node1, String node2, String edgeLabel) {
+    public void addEdge(N node1, N node2, E label) {
         //checkRep();
-        Edge e = new Edge(node1, node2, edgeLabel);
-        Node parent = nodes.get(node1);
-        parent.addEdge(e);
+        adjacencyList.get(node1).put(node2, label);
         //checkRep();
     }
 
@@ -60,12 +61,12 @@ public class Graph {
      * @return A list of all the parents of node. Returns null if there are no parents.
      * @spec.requires node != null.
      */
-    public List<String> getParents(String child) {
+    public List<N> getParents(N child) {
         //checkRep();
-        List<String> parents = new ArrayList<>();
-        for (String nodeName : nodes.keySet()) {
-            if (nodes.get(nodeName).isParent(child)) {
-                parents.add(nodeName);
+        List<N> parents = new ArrayList<>();
+        for (N node : adjacencyList.keySet()) {
+            if (adjacencyList.get(node).containsKey(child)) {
+                parents.add(node);
             }
         }
         //checkRep();
@@ -83,20 +84,21 @@ public class Graph {
      * @return A list of all the children of node. Returns null if there are no children.
      * @spec.requires node != null.
      */
-    public List<String> getChildren(String parent) {
+    public List<N> getChildren(N parent) {
         //checkRep();
-        List<String> children = new ArrayList<>();
-        Node parentNode = nodes.get(parent);
-        for (String nodeName : nodes.keySet()) {
-            if (parentNode.isParent(nodeName)) {
-                children.add(nodeName + "(" + parentNode.getEdge(nodeName) + ") ");
+        List<N> children = new ArrayList<>();
+        //List<Edge<N, E>> edges = adjacencyList.get(parent);
+        for (N node : adjacencyList.keySet()) {
+            if (node.equals(parent)) {
+                children = new ArrayList<>(adjacencyList.get(parent).keySet());
+                return children;
             }
         }
         //checkRep();
-        if (children.isEmpty()) {
+        /*if (children.isEmpty()) {
             return null;
-        }
-        return children;
+        }*/
+        return null;
     }
 
     /**
@@ -106,10 +108,10 @@ public class Graph {
      * @return whether the edge is in the graph or not.
      * @spec.requires edge != null
      */
-    public boolean isEdge(String edge) {
+    public boolean isEdge(E edge) {
         //checkRep();
-        for (String nodeName : nodes.keySet()) {
-            if (nodes.get(nodeName).containsEdge(edge)) {
+        for (N node : adjacencyList.keySet()) {
+            if (adjacencyList.get(node).containsValue(edge)) {
                 //checkRep();
                 return true;
             }
@@ -127,7 +129,7 @@ public class Graph {
      */
     public boolean isNode(String nodeName) {
         //checkRep();
-        return nodes.containsKey(nodeName);
+        return adjacencyList.containsKey(nodeName);
     }
 
     /**
@@ -135,109 +137,19 @@ public class Graph {
      *
      * @return list of all the nodes.
      */
-    public Set<String> getNodes() {
+    public Set<N> getNodes() {
         //checkRep();
-        return nodes.keySet();
+        return adjacencyList.keySet();
+    }
+
+    public E getEdge(N parent, N child) {
+        return adjacencyList.get(parent).get(child);
     }
 
     private void checkRep() {
-        assert nodes != null;
-        for (String nodeName : nodes.keySet()) {
-            assert nodes.containsKey(nodeName);
-        }
-    }
-
-    private class Node {
-
-        // RI: name != null, outgoingEdges != null, outgoingEdges = edge1(this,other1,label1), edge2(this,other2,label2), ... , edgeN(this,otherN,labelN)
-        // AF(this) = name & outgoingEdges{edge1(this,other1,label1) + edge2(this,other2,label2) + ... + edgeN(this,otherN,labelN)}
-
-        public String name;
-        private List<Edge> outgoingEdges;
-
-        // Create an instance of a node class using a given list of edges.
-        private Node(String name, ArrayList<Edge> edges) {
-            this.name = name;
-            outgoingEdges = new ArrayList<>(edges);
-            //checkRep();
-        }
-
-        // Create an instance of a node.
-        public Node(String name) {
-            this.name = name;
-            outgoingEdges = new ArrayList<>();
-            //checkRep();
-        }
-
-        // Add an outgoing edge to this node.
-        private void addEdge(Edge e) {
-            //checkRep();
-            outgoingEdges.add(e);
-            //checkRep();
-        }
-
-        // Check if this node is the parent of another node in an edge.
-        private boolean isParent(String child) {
-            //checkRep();
-            for (Edge e : outgoingEdges) {
-                if (e.node2.equals(child)) {
-                    //checkRep();
-                    return true;
-                }
-            }
-            //checkRep();
-            return false;
-        }
-
-        // Check if this node contains the given edge.
-        private boolean containsEdge(String edge) {
-            //checkRep();
-            for (Edge e : outgoingEdges) {
-                if (e.label.equals(edge)) {
-                    //checkRep();
-                    return true;
-                }
-            }
-            //checkRep();
-            return false;
-        }
-
-        // Return the edge connecting the parent node (this) and the child node (otherNode).
-        // Returns null if there is no edge.
-        private String getEdge(String otherNode) {
-            //checkRep();
-            for (Edge e : outgoingEdges) {
-                if (e.node1.equals(name) && e.node2.equals(otherNode)) {
-                    //checkRep();
-                    return e.label;
-                }
-            }
-            //checkRep();
-            return null;
-        }
-
-        private void checkRep() {
-            assert name != null;
-            assert outgoingEdges != null;
-            for (int i = 0; i < outgoingEdges.size(); i++) {
-                assert outgoingEdges.get(i) != null;
-            }
-        }
-    }
-
-    private class Edge {
-
-        // RI: node1 != null, node2 != null, label != null
-        // AF(this) = node1 + node2 + label
-
-        private String node1;
-        private String node2;
-        private String label;
-
-        private Edge(String node1, String node2, String label) {
-            this.node1 = node1;
-            this.node2 = node2;
-            this.label = label;
+        assert adjacencyList != null;
+        for (N node : adjacencyList.keySet()) {
+            assert adjacencyList.containsKey(node);
         }
     }
 }

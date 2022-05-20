@@ -29,7 +29,7 @@ public class GraphTestDriver {
     /**
      * String -> Graph: maps the names of graphs to the actual graph
      **/
-    private final Map<String, Graph> graphs = new HashMap<String, Graph>();
+    private final Map<String, Graph<String, String>> graphs = new HashMap<>();
     private final PrintWriter output;
     private final BufferedReader input;
 
@@ -114,7 +114,7 @@ public class GraphTestDriver {
     }
 
     private void createGraph(String graphName) {
-        Graph g = new Graph();
+        Graph<String, String> g = new Graph<>();
 
         graphs.put(graphName, g);
         output.println("created graph " + graphName);
@@ -133,8 +133,8 @@ public class GraphTestDriver {
 
     private void addNode(String graphName, String nodeName) {
 
-        Graph g = graphs.get(graphName);
-        g.addNode(nodeName);
+        Graph<String, String> g = graphs.get(graphName);
+        g.addNode(nodeName, nodeName);
         output.println("added node " + nodeName + " to " + graphName);
     }
 
@@ -153,7 +153,7 @@ public class GraphTestDriver {
 
     private void addEdge(String graphName, String parentName, String childName,
                          String edgeLabel) {
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         g.addEdge(parentName, childName, edgeLabel);
         output.println("added edge " + edgeLabel + " from " + parentName + " to " + childName + " in " + graphName);
     }
@@ -168,11 +168,11 @@ public class GraphTestDriver {
     }
 
     private void listNodes(String graphName) {
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         Set<String> nodes = g.getNodes();
-        String stringNodes = "";
+        StringBuilder stringNodes = new StringBuilder();
         for (String node : nodes) {
-            stringNodes += " " + node;
+            stringNodes.append(" ").append(node);
         }
         output.println(graphName + " contains:" + stringNodes);
     }
@@ -189,12 +189,12 @@ public class GraphTestDriver {
 
     private void listChildren(String graphName, String parentName) {
 
-        Graph g = graphs.get(graphName);
+        Graph<String, String> g = graphs.get(graphName);
         List<String> children = g.getChildren(parentName);
         StringBuilder childNodes = new StringBuilder();
-        if (children != null) {
-            for (String child : children) {
-                childNodes.append(" " + child);
+        if (!children.isEmpty()) {
+            for (String node : children) {
+                childNodes.append(" " + node + "(" + g.getEdge(parentName, node) + ")");
             }
             output.println("the children of " + parentName + " in " + graphName + " are: " + childNodes.toString().trim());
         } else {
