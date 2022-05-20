@@ -24,12 +24,12 @@ public class Graph<N, E> {
     /**
      * Adds a node to the graph.
      *
-     * @param nodeName The name of the node being added to the graph.
+     * @param data The data of the node being added to the graph.
      * @spec.requires node != null and this does not contain node
      * @spec.modifies this
      * @spec.effects this += node
      */
-    public void addNode(String nodeName, N data) {
+    public void addNode(N data) {
         //checkRep();
         if (!adjacencyList.containsKey(data)) {
             adjacencyList.put(data, new HashMap<>());
@@ -142,8 +142,40 @@ public class Graph<N, E> {
         return adjacencyList.keySet();
     }
 
+    /**
+     * Returns a set of all the edges in the graph.
+     *
+     * @return list of all the edges.
+     */
+    public Set<E> getEdges(N parent) {
+        return new HashSet<E>(adjacencyList.get(parent).values());
+    }
+
+    /**
+     * Returns a the edge connecting the two given nodes.
+     *
+     * @return edge between two nodes.
+     */
     public E getEdge(N parent, N child) {
         return adjacencyList.get(parent).get(child);
+    }
+
+    /**
+     * Returns whether a given node is in the graph.
+     *
+     * @return list of all the nodes.
+     */
+    public boolean containsNode(N node) {
+        return adjacencyList.containsKey(node);
+    }
+
+    /**
+     * Returns whether a given edge is in the graph.
+     *
+     * @return list of all the nodes.
+     */
+    public boolean containsEdge(N parent, E edge) {
+        return adjacencyList.get(parent).containsValue(edge);
     }
 
     private void checkRep() {

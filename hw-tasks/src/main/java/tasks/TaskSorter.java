@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class TaskSorter {
 
-    // TODO: Enter private Graph field here with description
+    private Graph<Task, Dependency> g;
     // nodes of Graphs should be Task objects,
     // and edges should be Dependency objects.
     // You don't have to write an abstraction function or
@@ -22,9 +22,9 @@ public class TaskSorter {
      * Creates a new TaskSorter object with no added tasks or dependencies.
      */
     public TaskSorter() {
-        // TODO: Implement creating an empty graph.
+        g = new Graph<>();
 
-        throw new RuntimeException("not yet implemented");
+        //throw new RuntimeException("not yet implemented");
     }
 
     /**
@@ -38,7 +38,11 @@ public class TaskSorter {
         // TODO: Implement adding a Task as a node.
         //       Do nothing if the task exists already.
 
-        throw new RuntimeException("not yet implemented");
+        if (!g.containsNode(t)) {
+            g.addNode(t);
+        }
+
+        //throw new RuntimeException("not yet implemented");
     }
 
     /**
@@ -47,8 +51,9 @@ public class TaskSorter {
      */
     public Set<Task> getTasks() {
         // TODO: Implement getting all the tasks (nodes) in the graph.
+        return g.getNodes();
 
-        throw new RuntimeException("not yet implemented");
+        //throw new RuntimeException("not yet implemented");
     }
 
     /**
@@ -65,10 +70,14 @@ public class TaskSorter {
 
         // TODO: Implement adding a Dependency as an edge.
         //       Do nothing if the same dependency exists already.
+
+        if (!g.containsEdge(before, dep)) {
+            g.addEdge(before, after, dep);
+        }
         // NOTE: The edge should go from "before" to "after"!
         //       The tests will not pass if the edges are the other way.
 
-        throw new RuntimeException("not yet implemented");
+        //throw new RuntimeException("not yet implemented");
     }
 
     /**
@@ -84,7 +93,9 @@ public class TaskSorter {
         //       depending on the given Task (in other words, get the edges
         //       to a node's children in the graph)
 
-        throw new RuntimeException("not yet implemented");
+        return g.getEdges(t);
+
+        //throw new RuntimeException("not yet implemented");
     }
 
     /**

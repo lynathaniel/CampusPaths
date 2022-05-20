@@ -1,2 +1,6 @@
 Briefly list any changes you made to your graph class during hw-pathfinder, and why you made those changes.
 
+Changed my implementation of the graph class to no longer require Node and Edge private classes.
+Rather, I now just use a nested map in order to store parent nodes, child nodes, and their
+corresponding edge labels.
+

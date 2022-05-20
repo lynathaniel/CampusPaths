@@ -134,7 +134,7 @@ public class GraphTestDriver {
     private void addNode(String graphName, String nodeName) {
 
         Graph<String, String> g = graphs.get(graphName);
-        g.addNode(nodeName, nodeName);
+        g.addNode(nodeName);
         output.println("added node " + nodeName + " to " + graphName);
     }
 

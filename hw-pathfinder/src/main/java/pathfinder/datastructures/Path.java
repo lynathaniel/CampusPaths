@@ -20,7 +20,7 @@ import java.util.List;
  * Path#getStart() and Path#getEnd(). Also contains a cached
  * version of the total cost along this path, for efficient repeated access.
  */
-public class Path<T> implements Iterable<Path<?>.Segment> {
+public class Path<T> implements Iterable<Path<?>.Segment>, Comparable<Path<T>> {
 
     // AF(this) =
     //      first point in the path => start
@@ -76,10 +76,10 @@ public class Path<T> implements Iterable<Path<?>.Segment> {
      * @param segmentCost The cost of the segment being added to the end of this path.
      * @return A new path representing the current path with the given segment appended to the end.
      */
-    public Path extend(T newEnd, double segmentCost) {
+    public Path<T> extend(T newEnd, double segmentCost) {
         checkRep();
         //
-        Path extendedPath = new Path(start);
+        Path<T> extendedPath = new Path<>(start);
         extendedPath.path.addAll(this.path);
         extendedPath.path.add(new Segment(this.getEnd(), newEnd, segmentCost));
         extendedPath.cost = this.cost + segmentCost;
@@ -209,6 +209,11 @@ public class Path<T> implements Iterable<Path<?>.Segment> {
         return sb.toString();
     }
 
+    @Override
+    public int compareTo(Path<T> o) {
+        return (int) (this.cost - o.cost);
+    }
+
     /**
      * Segment represents a single segment as part of a longer, more complex path between points.
      * Segments are immutable parts of a larger path that cannot be instantiated directly, and
@@ -306,7 +311,7 @@ public class Path<T> implements Iterable<Path<?>.Segment> {
             if(!(obj instanceof Path<?>.Segment)) {
                 return false;
             }
-            Segment other = (Segment) obj;
+            Path<?>.Segment other = (Path<?>.Segment) obj;
             return other.getStart().equals(this.getStart())
                    && other.getEnd().equals(this.getEnd())
                    && (Double.compare(this.cost, other.cost) == 0);

@@ -31,13 +31,13 @@ public class GraphTest {
     @Test
     public void testIsNode() {
         assertFalse(graph1.isNode(node1));
-        graph1.addNode(node1, node1);
+        graph1.addNode(node1);
         assertTrue(graph1.isNode(node1));
         assertFalse(graph1.isNode(node2));
-        graph1.addNode(node2, node2);
+        graph1.addNode(node2);
         assertTrue(graph1.isNode(node2));
         assertFalse(graph1.isNode(node3));
-        graph1.addNode(node3, node3);
+        graph1.addNode(node3);
         assertTrue(graph1.isNode(node3));
     }
 
@@ -46,9 +46,9 @@ public class GraphTest {
      */
     @Test
     public void testIsEdge() {
-        graph2.addNode(node1, node1);
-        graph2.addNode(node2, node2);
-        graph2.addNode(node3, node3);
+        graph2.addNode(node1);
+        graph2.addNode(node2);
+        graph2.addNode(node3);
         assertFalse(graph2.isEdge(edge1));
         graph2.addEdge(node1, node2, edge1);
         assertTrue(graph2.isEdge(edge1));
@@ -65,19 +65,19 @@ public class GraphTest {
      */
     @Test
     public void testDuplicates() {
-        graph1.addNode(node1, node1);
-        graph1.addNode(node1, node1);
-        graph1.addNode(node1, node1);
-        graph1.addNode(node1, node1);
-        graph1.addNode(node1, node1);
+        graph1.addNode(node1);
+        graph1.addNode(node1);
+        graph1.addNode(node1);
+        graph1.addNode(node1);
+        graph1.addNode(node1);
         Set<String> set = graph1.getNodes();
         assertTrue(set.size() == 1);
 
-        graph2.addNode(node1, node1);
-        graph2.addNode(node1, node1);
-        graph2.addNode(node1, node1);
-        graph2.addNode(node1, node1);
-        graph2.addNode(node1, node1);
+        graph2.addNode(node1);
+        graph2.addNode(node1);
+        graph2.addNode(node1);
+        graph2.addNode(node1);
+        graph2.addNode(node1);
         Set<String> set2 = graph2.getNodes();
         assertTrue(set2.size() == 1);
     }
