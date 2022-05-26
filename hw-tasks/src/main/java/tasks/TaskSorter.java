@@ -71,7 +71,7 @@ public class TaskSorter {
         // TODO: Implement adding a Dependency as an edge.
         //       Do nothing if the same dependency exists already.
 
-        if (!g.containsEdge(before, dep)) {
+        if (!g.containsEdge(before, after, dep)) {
             g.addEdge(before, after, dep);
         }
         // NOTE: The edge should go from "before" to "after"!
@@ -93,7 +93,11 @@ public class TaskSorter {
         //       depending on the given Task (in other words, get the edges
         //       to a node's children in the graph)
 
-        return g.getEdges(t);
+        Set<Dependency> dependencies = new HashSet<>();
+        for (LabeledEdge<Task, Dependency> edge : g.getEdges(t)) {
+            dependencies.add(edge.getLabel());
+        }
+        return dependencies;
 
         //throw new RuntimeException("not yet implemented");
     }

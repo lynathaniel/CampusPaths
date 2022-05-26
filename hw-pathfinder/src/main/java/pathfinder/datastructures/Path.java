@@ -20,7 +20,7 @@ import java.util.List;
  * Path#getStart() and Path#getEnd(). Also contains a cached
  * version of the total cost along this path, for efficient repeated access.
  */
-public class Path<T> implements Iterable<Path<?>.Segment>, Comparable<Path<T>> {
+public class Path<T> implements Iterable<Path<T>.Segment>, Comparable<Path<T>> {
 
     // AF(this) =
     //      first point in the path => start
@@ -123,7 +123,7 @@ public class Path<T> implements Iterable<Path<?>.Segment>, Comparable<Path<T>> {
      * UnsupportedOperationException if Iterator#remove() is called.
      */
     @Override
-    public Iterator<Path<?>.Segment> iterator() {
+    public Iterator<Path<T>.Segment> iterator() {
         // Create a wrapping iterator to guarantee exceptional behavior on Iterator#remove.
         return new Iterator<>() {
 
@@ -135,7 +135,7 @@ public class Path<T> implements Iterable<Path<?>.Segment>, Comparable<Path<T>> {
             }
 
             @Override
-            public Path.Segment next() {
+            public Path<T>.Segment next() {
                 return backingIterator.next();
             }
 
@@ -211,7 +211,7 @@ public class Path<T> implements Iterable<Path<?>.Segment>, Comparable<Path<T>> {
 
     @Override
     public int compareTo(Path<T> o) {
-        return (int) (this.cost - o.cost);
+        return Double.compare(this.cost, o.cost);
     }
 
     /**

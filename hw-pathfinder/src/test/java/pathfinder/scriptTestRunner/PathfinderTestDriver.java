@@ -12,6 +12,7 @@
 package pathfinder.scriptTestRunner;
 
 import graph.Graph;
+import graph.Edge;
 import pathfinder.DijkstraAlg;
 import pathfinder.datastructures.Path;
 
@@ -147,7 +148,8 @@ public class PathfinderTestDriver {
                          double edgeLabel) {
         Graph<String, Double> g = graphs.get(graphName);
         g.addEdge(parentName, childName, edgeLabel);
-        output.println("added edge " + edgeLabel + " from " + parentName + " to " + childName + " in " + graphName);
+        String formattedLabel = String.format("%.3f", edgeLabel);
+        output.println("added edge " + formattedLabel + " from " + parentName + " to " + childName + " in " + graphName);
     }
 
     private void listNodes(List<String> arguments) {
@@ -182,11 +184,12 @@ public class PathfinderTestDriver {
     private void listChildren(String graphName, String parentName) {
 
         Graph<String, Double> g = graphs.get(graphName);
-        List<String> children = g.getChildren(parentName);
+        Set<Edge<String, Double>> edges = g.getEdges(parentName);
         StringBuilder childNodes = new StringBuilder();
-        if (!children.isEmpty()) {
-            for (String node : children) {
-                childNodes.append(" " + node + "(" + String.format("%.3f", g.getEdge(parentName, node)) + ")");
+        if (!edges.isEmpty()) {
+            for (Edge<String, Double> edge : edges) {
+                String formattedLabel = String.format("%.3f", edge.getLabel());
+                childNodes.append(" " + edge.getChild() + "(" + formattedLabel + ")");
             }
             output.println("the children of " + parentName + " in " + graphName + " are: " + childNodes.toString().trim());
         } else {
@@ -206,15 +209,8 @@ public class PathfinderTestDriver {
 
     private void findPath(String graphName, String node1, String node2) {
         Graph<String, Double> g = graphs.get(graphName);
-        List<Path<String>> shortestPath = DijkstraAlg.findMinCostPath(node1, node2, g);
-        if (!g.containsNode(node1) || !g.containsNode(node2)) {
-            if (!g.containsNode(node1)) {
-                output.println("unknown: " + node1);
-            }
-            if (!g.containsNode(node2)) {
-                output.println("unknown: " + node2);
-            }
-        } else {
+        Path<String> shortestPath = DijkstraAlg.findMinCostPath(node1, node2, g);
+        if (g.containsNode(node1) && g.containsNode(node2)) {
             output.println("path from " + node1 + " to " + node2 + ":");
             if (shortestPath == null) {
                 output.println("no path found");
@@ -222,14 +218,21 @@ public class PathfinderTestDriver {
                 output.println("total cost: 0.000");
             }
             double totalWeight = 0.0;
-            for (Path<String> segments : shortestPath) {
-                double weight = segments.getCost();
+            for (Path<String>.Segment segment : shortestPath) {
+                double weight = segment.getCost();
                 totalWeight += weight;
                 String formattedWeight = String.format(" with weight %.3f", weight);
-                output.println(segments.getStart() + " to " + segments.getEnd() + formattedWeight);
+                output.println(segment.getStart() + " to " + segment.getEnd() + formattedWeight);
             }
             String formattedTotalWeight = String.format("total cost: %.3f", totalWeight);
             output.println(formattedTotalWeight);
+        } else{
+            if (!g.containsNode(node1)) {
+                output.println("unknown: " + node1);
+            }
+            if (!g.containsNode(node2)) {
+                output.println("unknown: " + node2);
+            }
         }
 
     }

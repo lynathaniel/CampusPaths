@@ -11,7 +11,7 @@ public class Graph<N, E> {
     // RI: nodes != null, nodes = nodes(nodeName1), nodes(nodeName2), ... , nodes(nodeNameN)
     // AF(this) = {nodes(nodeName1) + nodes(nodeName2) + ... + nodes(nodeNameN)}
 
-    private Map<N, Map<N, E>> adjacencyList;
+    private Map<N, Set<Edge<N, E>>> adjacencyList;
 
     /**
      * Creates an empty graph object.
@@ -19,6 +19,18 @@ public class Graph<N, E> {
     public Graph() {
         adjacencyList = new HashMap<>();
         //checkRep();
+    }
+
+    /**
+     * Creates a graph based on a set of given nodes.
+     * @spec.requires nodes != null
+     * @param nodes List of given nodes
+     */
+    public Graph(List<N> nodes) {
+        adjacencyList = new HashMap<>();
+        for (N node : nodes) {
+            addNode(node);
+        }
     }
 
     /**
@@ -32,7 +44,7 @@ public class Graph<N, E> {
     public void addNode(N data) {
         //checkRep();
         if (!adjacencyList.containsKey(data)) {
-            adjacencyList.put(data, new HashMap<>());
+            adjacencyList.put(data, new HashSet<>());
         }
         //checkRep();
     }
@@ -40,7 +52,7 @@ public class Graph<N, E> {
     /**
      * Adds an edge between two nodes in the graph.
      *
-     * @param label The given labeled edge that will connect the two nodes.
+     * @param label The given  edge that will connect the two nodes.
      * @param node1 The first given node to connect.
      * @param node2 The second given node to connect.
      * @spec.requires edge != null, node1 != null and this contains node1, node2 != null, this contains node2 and this does not contain edge.
@@ -49,7 +61,10 @@ public class Graph<N, E> {
      */
     public void addEdge(N node1, N node2, E label) {
         //checkRep();
-        adjacencyList.get(node1).put(node2, label);
+        if (!containsNode(node1)) {
+            addNode(node1);
+        }
+        adjacencyList.get(node1).add(new Edge<>(node1, node2, label));
         //checkRep();
     }
 
@@ -61,7 +76,7 @@ public class Graph<N, E> {
      * @return A list of all the parents of node. Returns null if there are no parents.
      * @spec.requires node != null.
      */
-    public List<N> getParents(N child) {
+    /*public List<N> getParents(N child) {
         //checkRep();
         List<N> parents = new ArrayList<>();
         for (N node : adjacencyList.keySet()) {
@@ -74,7 +89,7 @@ public class Graph<N, E> {
             return null;
         }
         return parents;
-    }
+    }*/
 
     /**
      * Returns a list of the nodes that are the children of the given node or null if there
@@ -86,19 +101,17 @@ public class Graph<N, E> {
      */
     public List<N> getChildren(N parent) {
         //checkRep();
-        List<N> children = new ArrayList<>();
-        //List<Edge<N, E>> edges = adjacencyList.get(parent);
-        for (N node : adjacencyList.keySet()) {
-            if (node.equals(parent)) {
-                children = new ArrayList<>(adjacencyList.get(parent).keySet());
-                return children;
-            }
-        }
-        //checkRep();
-        /*if (children.isEmpty()) {
+        if (!adjacencyList.containsKey(parent)) {
             return null;
-        }*/
-        return null;
+        }
+        Set<Edge<N, E>> edges = adjacencyList.get(parent);
+        List<N> children = new ArrayList<>();
+        for (Edge<N, E> edge : edges) {
+            children.add(edge.getChild());
+        }
+
+        return children;
+        //checkRep();
     }
 
     /**
@@ -108,10 +121,10 @@ public class Graph<N, E> {
      * @return whether the edge is in the graph or not.
      * @spec.requires edge != null
      */
-    public boolean isEdge(E edge) {
+    public boolean isEdge(Edge<N, E> edge) {
         //checkRep();
         for (N node : adjacencyList.keySet()) {
-            if (adjacencyList.get(node).containsValue(edge)) {
+            if (adjacencyList.get(node).contains(edge)) {
                 //checkRep();
                 return true;
             }
@@ -123,13 +136,13 @@ public class Graph<N, E> {
     /**
      * Checks if the given node can be found within the current map.
      *
-     * @param nodeName The node that is being checked for.
+     * @param node The node that is being checked for.
      * @return whether the node is in the graph or not.
      * @spec.requires node != null
      */
-    public boolean isNode(String nodeName) {
+    public boolean isNode(N node) {
         //checkRep();
-        return adjacencyList.containsKey(nodeName);
+        return adjacencyList.containsKey(node);
     }
 
     /**
@@ -147,17 +160,8 @@ public class Graph<N, E> {
      *
      * @return list of all the edges.
      */
-    public Set<E> getEdges(N parent) {
-        return new HashSet<E>(adjacencyList.get(parent).values());
-    }
-
-    /**
-     * Returns a the edge connecting the two given nodes.
-     *
-     * @return edge between two nodes.
-     */
-    public E getEdge(N parent, N child) {
-        return adjacencyList.get(parent).get(child);
+    public Set<Edge<N, E>> getEdges(N parent) {
+        return new HashSet<>(adjacencyList.get(parent));
     }
 
     /**
@@ -172,10 +176,28 @@ public class Graph<N, E> {
     /**
      * Returns whether a given edge is in the graph.
      *
-     * @return list of all the nodes.
+     * @return true/false if edge is in graph.
      */
-    public boolean containsEdge(N parent, E edge) {
-        return adjacencyList.get(parent).containsValue(edge);
+    public boolean containsEdge(N parent, Edge<N, E> edge) {
+        return adjacencyList.get(parent).contains(edge);
+    }
+
+    /**
+     * Returns whether the given Edge fields make up an edge
+     * within the graph.
+     * @param parent
+     * @param child
+     * @param edgeLabel
+     * @return true/false if edge is in graph
+     */
+    public boolean containsEdge(N parent, N child, E edgeLabel) {
+        Set<Edge<N, E>> edges = adjacencyList.get(parent);
+        for (Edge<N, E> edge : edges) {
+            if (edge.getChild().equals(child) && edge.getLabel().equals(edgeLabel)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void checkRep() {

@@ -12,6 +12,7 @@
 package pathfinder.textInterface;
 
 import pathfinder.CampusMap;
+import pathfinder.datastructures.Point;
 
 /**
  * Pathfinder represents a complete application capable of responding to user prompts to provide

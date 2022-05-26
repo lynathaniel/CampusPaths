@@ -141,6 +141,7 @@ public class TextInterfaceView {
     public void showPath(String start, String end, Path<Point> path) {
         System.out.println("Path from " + start + " to " + end + ":");
         for(Path<Point>.Segment pathSegment : path) {
+
             Direction dir = Direction.resolveDirection(pathSegment.getStart().getX(),
                                                        pathSegment.getStart().getY(),
                                                        pathSegment.getEnd().getX(),

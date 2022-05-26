@@ -49,15 +49,15 @@ public class GraphTest {
         graph2.addNode(node1);
         graph2.addNode(node2);
         graph2.addNode(node3);
-        assertFalse(graph2.isEdge(edge1));
+        assertFalse(graph2.containsEdge(node1, node2, edge1));
         graph2.addEdge(node1, node2, edge1);
-        assertTrue(graph2.isEdge(edge1));
-        assertFalse(graph2.isEdge(edge2));
+        assertTrue(graph2.containsEdge(node1, node2, edge1));
+        assertFalse(graph2.containsEdge(node1, node2, edge2));
         graph2.addEdge(node1, node2, edge2);
-        assertTrue(graph2.isEdge(edge2));
-        assertFalse(graph2.isEdge(edge3));
+        assertTrue(graph2.containsEdge(node1, node2, edge2));
+        assertFalse(graph2.containsEdge(node1, node2, edge3));
         graph2.addEdge(node1, node2, edge3);
-        assertTrue(graph2.isEdge(edge3));
+        assertTrue(graph2.containsEdge(node1, node2, edge3));
     }
 
     /**

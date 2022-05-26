@@ -23,14 +23,14 @@ import java.util.Map;
  * communicate requests for information or computation to the Model, instruct
  * the View on how to respond, and pass information from the Model to the View.
  */
-public class TextInterfaceController<T> implements InputHandler {
+public class TextInterfaceController implements InputHandler {
 
     // This class does not represent an ADT.
 
     /**
      * The data-carrier and processor for the application.
      */
-    private ModelAPI model;
+    private ModelAPI<Point> model;
 
     /**
      * The user-facing view and input receiver for this application.
@@ -44,7 +44,7 @@ public class TextInterfaceController<T> implements InputHandler {
      * @param model A model to use for computation and data.
      * @param view  A view to use to display data to the user.
      */
-    public TextInterfaceController(ModelAPI model, TextInterfaceView view) {
+    public TextInterfaceController(ModelAPI<Point> model, TextInterfaceView view) {
         this.model = model;
         this.view = view;
     }

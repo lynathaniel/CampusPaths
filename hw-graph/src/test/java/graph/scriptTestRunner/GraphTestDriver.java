@@ -12,6 +12,7 @@
 package graph.scriptTestRunner;
 
 import graph.Graph;
+import graph.Edge;
 
 import java.io.*;
 import java.util.*;
@@ -190,11 +191,11 @@ public class GraphTestDriver {
     private void listChildren(String graphName, String parentName) {
 
         Graph<String, String> g = graphs.get(graphName);
-        List<String> children = g.getChildren(parentName);
+        Set<Edge<String, String>> edges = g.getEdges(parentName);
         StringBuilder childNodes = new StringBuilder();
-        if (!children.isEmpty()) {
-            for (String node : children) {
-                childNodes.append(" " + node + "(" + g.getEdge(parentName, node) + ")");
+        if (!edges.isEmpty()) {
+            for (Edge<String, String> edge : edges) {
+                childNodes.append(" " + edge.getChild() + "(" + edge.getLabel() + ")");
             }
             output.println("the children of " + parentName + " in " + graphName + " are: " + childNodes.toString().trim());
         } else {
