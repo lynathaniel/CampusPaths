@@ -19,14 +19,21 @@ import { UW_LATITUDE_CENTER, UW_LONGITUDE_CENTER } from "./Constants";
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
 const position: LatLngExpression = [UW_LATITUDE_CENTER, UW_LONGITUDE_CENTER];
 
+// Takes a single prop that defines an array of line fields.
 interface MapProps {
-  // TODO: Define the props of this component. You will want to pass down edges
-  // so you can render them here
+  edges: [number, number, number, number, string][];
 }
 
-interface MapState {}
+class Map extends Component<MapProps> {
 
-class Map extends Component<MapProps, MapState> {
+  // arrow functions that converts edges to MapLines to be rendered.
+  renderMapLines = () => {
+    if (this.props.edges !== null) {
+        return this.props.edges.map((edge, index) => {
+            return <MapLine x1={edge[0]} y1={edge[1]} x2={edge[2]} y2={edge[3]} color={edge[4]} key={index}/>
+        });
+    }
+  };
   render() {
     return (
       <div id="map">
@@ -40,10 +47,7 @@ class Map extends Component<MapProps, MapState> {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {
-            // TODO: Render map lines here using the MapLine component. E.g.
-            // <MapLine key={key1} color="red" x1={1000} y1={1000} x2={2000} y2={2000}/>
-            // will draw a red line from the point 1000,1000 to 2000,2000 on the
-            // map 
+            this.renderMapLines()
           }
         </MapContainer>
       </div>
