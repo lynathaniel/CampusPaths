@@ -27,7 +27,7 @@ interface MapProps {
 class Map extends Component<MapProps> {
 
   // arrow functions that converts edges to MapLines to be rendered.
-  renderMapLines = () => {
+  drawLines = function(this: Map) {
     if (this.props.edges !== null) {
         return this.props.edges.map((edge, index) => {
             return <MapLine x1={edge[0]} y1={edge[1]} x2={edge[2]} y2={edge[3]} color={edge[4]} key={index}/>
@@ -47,7 +47,7 @@ class Map extends Component<MapProps> {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           {
-            this.renderMapLines()
+            this.drawLines()
           }
         </MapContainer>
       </div>
