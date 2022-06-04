@@ -12,18 +12,51 @@
 package campuspaths;
 
 import campuspaths.utils.CORSFilter;
+import com.google.gson.Gson;
+import pathfinder.DijkstraAlg;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+import spark.Spark;
+import pathfinder.CampusMap;
+import java.util.*;
+import pathfinder.datastructures.*;
 
 public class SparkServer {
 
     public static void main(String[] args) {
         CORSFilter corsFilter = new CORSFilter();
         corsFilter.apply();
-        // The above two lines help set up some settings that allow the
-        // React application to make requests to the Spark server, even though it
-        // comes from a different server.
-        // You should leave these two lines at the very beginning of main().
+        CampusMap map = new CampusMap();
 
-        // TODO: Create all the Spark Java routes you need here.
+        // Returns JSON string of a mapping of the building names and their abbreviated forms.
+        Spark.get("/buildings", new Route() {
+            @Override
+            public Object handle(Request request, Response response) throws Exception {
+                Map<String, String> buildingNames = map.buildingNames();
+                Gson gson = new Gson();
+                return gson.toJson(buildingNames);
+            }
+        });
+
+        // Returns a JSON string of the Path object that represents the shortest
+        // distance between two buildings.
+        Spark.get("/findPath", new Route() {
+            @Override
+            public Object handle(Request request, Response response) throws Exception {
+                String start = request.queryParams("start");
+                String end = request.queryParams("end");
+                // Check for incorrect input
+                if (!map.shortNameExists(start) || !map.shortNameExists(end)) {
+                    Spark.halt(400);
+                } else {
+                    Path<Point> shortestPath = map.findShortestPath(start, end);
+                    Gson gson = new Gson();
+                    return gson.toJson(shortestPath);
+                }
+                return null;
+            }
+        });
     }
 
 }

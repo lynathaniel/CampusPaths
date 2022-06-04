@@ -10,7 +10,7 @@
  */
 
 import React, { Component } from "react";
-import { Polyline } from "react-leaflet";
+import {Polyline} from "react-leaflet";
 import {
   UW_LATITUDE,
   UW_LATITUDE_OFFSET,
